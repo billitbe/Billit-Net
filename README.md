@@ -39,7 +39,18 @@ There are samples for each of the API endpoints. These have been done as console
 String vat = "BE0563846944";
 BillitService service = new BillitService(APIKEY);
 var result = service.IsCompanyActiveOnPEPPOL(vat);
-//peppolactive.Registered contains TRUE if the VAT-number is available on PEPPOL
+```
+
+### How to send a PDF or image to fast input to be processed to UBL?
+```csharp
+var service = new BillitService(APIKEY_VALID);
+FileToProcess file = new FileToProcess() {
+	File = new File {	
+		FileName = "test.pdf",
+		FileContent = "JVBERi0xLjcNJeLjz9MNCjE0IDAgb..."
+                }
+	};
+service.PushDocumentToFastInput(file);
 ```
 
 ## License
