@@ -6,7 +6,6 @@ A skinny wrapper of the BILLIT API. A skinny wrapper of the BILLIT API. Supports
 * [What is supported?](#what-is-supported)
 * [Things to note](#things-to-note)
 * [Samples](#samples)
-* [Querying](#querying)
 * [License](#license)
 
 ## Installation
