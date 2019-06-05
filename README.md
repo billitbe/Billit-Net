@@ -1,7 +1,7 @@
 ```csharp
-var vat = "BE0563846944";
-var service = new BillitService(APIKEY);
-var peppolactive = service.IsCompanyActiveOnPEPPOL(vat);
+String vat = "BE0563846944";
+BillitService service = new BillitService(APIKEY);
+var result = service.IsCompanyActiveOnPEPPOL(vat);
 //peppolactive.Registered contains TRUE if the VAT-number is available on PEPPOL
 ```
 
