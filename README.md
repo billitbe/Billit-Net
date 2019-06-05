@@ -1,11 +1,3 @@
-```csharp
-String vat = "BE0563846944";
-BillitService service = new BillitService(APIKEY);
-var result = service.IsCompanyActiveOnPEPPOL(vat);
-//peppolactive.Registered contains TRUE if the VAT-number is available on PEPPOL
-```
-
-
 BILLIT-Net
 ========
 A skinny wrapper of the BILLIT API. A skinny wrapper of the BILLIT API. Supports Company Information, Invoices, Customers & Suppliers
@@ -42,6 +34,13 @@ Download the source code from github and compile yourself: **https://github.com/
 ## Samples
 There are samples for each of the API endpoints. These have been done as console application and also a collection of Unit tests. The test projects contain lots of useful examples of how to use this library to interact with the Billit API.
 
+### How to verify if a customer is active on PEPPOL?
+```csharp
+String vat = "BE0563846944";
+BillitService service = new BillitService(APIKEY);
+var result = service.IsCompanyActiveOnPEPPOL(vat);
+//peppolactive.Registered contains TRUE if the VAT-number is available on PEPPOL
+```
 
 ## License
 
