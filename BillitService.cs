@@ -16,7 +16,9 @@ namespace Billit_Net
         const string URLPARTIES = "https://api.billit.be/v1/parties";
         const string URLORDERS = "https://api.billit.be/v1/orders";
         const string ACCEPTHEADER = "Accept";
+        const string RESPONSEHEADER = "Content-type";
         const string ACCEPTHEADERJSON = "application/json";
+        const string RESPONSECONTENTTYPE = "application/json";
         const string PARTYIDHEADER = "partyID";
         const string API_KEYHEADER = "apiKey";
 
@@ -127,26 +129,10 @@ namespace Billit_Net
             return expenses;
         }
 
-        private void Connect()
-        {
-            using (var client = new WebClient())
-            {
-                var headers = new WebHeaderCollection
-                {
-                    { ACCEPTHEADER, ACCEPTHEADERJSON },
-                    { API_KEYHEADER, this.m_apiKey }
-                };
-                client.Headers = headers;
-                var json = client.DownloadString(URLACCOUNTINFORMATION);
-                var serializer = new JavaScriptSerializer();
-                m_accountinfo = serializer.Deserialize<AccountInformation>(json);
-            }
-        }
-
         public PeppolParticipantInformation IsCompanyActiveOnPEPPOL(string VAT)
         {
             PeppolParticipantInformation result = null;
-            var url = string.Format("https://api.billit.be/v1/peppol/participantInformation/{0}",VAT);
+            var url = string.Format("https://api.billit.be/v1/peppol/participantInformation/{0}", VAT);
             using (var client = new WebClient())
             {
                 var headers = new WebHeaderCollection
@@ -163,6 +149,41 @@ namespace Billit_Net
             return result;
         }
 
+        public void PushDocumentToFastInput(FileToProcess fileinfo)
+        {
+            var url = string.Format("https://api.billit.be/v1/toProcess");
+
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey },
+                        { RESPONSEHEADER, RESPONSECONTENTTYPE }
+                    };
+                client.Headers = headers;
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(fileinfo);
+                var result = client.UploadString(url, json);
+            }
+        }
+
+
+        private void Connect()
+        {
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                {
+                    { ACCEPTHEADER, ACCEPTHEADERJSON },
+                    { API_KEYHEADER, this.m_apiKey }
+                };
+                client.Headers = headers;
+                var json = client.DownloadString(URLACCOUNTINFORMATION);
+                var serializer = new JavaScriptSerializer();
+                m_accountinfo = serializer.Deserialize<AccountInformation>(json);
+            }
+        }
 
     }
 }

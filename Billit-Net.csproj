@@ -47,6 +47,7 @@
     <Compile Include="BillitService.cs" />
     <Compile Include="DTO\AccountInformation.cs" />
     <Compile Include="DTO\Company.cs" />
+    <Compile Include="DTO\FileToProcess.cs" />
     <Compile Include="DTO\Order.cs" />
     <Compile Include="DTO\Party.cs" />
     <Compile Include="DTO\PeppolParticipantInformation.cs" />
