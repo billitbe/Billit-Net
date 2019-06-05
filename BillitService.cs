@@ -31,7 +31,7 @@ namespace Billit_Net
             Connect();
         }
 
-        public IEnumerable<Party> GetParties(string partyID, string odatafilter = "?$orderby=lastmodified+asc")
+        public IEnumerable<Party> GetParties(string partyID, string odatafilter = "?$orderby=LastModified+asc")
         {
             if (string.IsNullOrEmpty(partyID)) partyID = AccountInformation.Companies[0].PartyID;
 
