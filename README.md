@@ -1,3 +1,11 @@
+```csharp
+var vat = "BE0563846944";
+var service = new BillitService(APIKEY_VALID);
+var peppolactive = service.IsCompanyActiveOnPEPPOL(vat);
+//peppolactive.Registered contains TRUE if the VAT-number is available on PEPPOL
+```
+
+
 BILLIT-Net
 ========
 A skinny wrapper of the BILLIT API. A skinny wrapper of the BILLIT API. Supports Company Information, Invoices, Customers & Suppliers
