@@ -22,7 +22,7 @@ Download the source code from github and compile yourself: **https://github.com/
 * CompanyInfo - Create, Find and Update
 * Credit Notes - Create, Find and Update
 * Invoices - Create, Find and Update
-* PEPPOL - Find VAT, Send, Receive
+* PEPPOL - Find VAT, Send E-invoice, Receive E-invoice
 
 ### Documents API
 * Documents - Add PDF, Word, Excel files
