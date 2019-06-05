@@ -5,11 +5,15 @@ using System.Collections;
 using System.Linq;
 using Billit_Net;
 
-namespace Billit.SDK.Test
+namespace Billit_Net.Test
 {
     [TestClass]
     public class BillitServiceTest
     {
+        /// <summary>
+        /// Please be aware that your IP might be throttled or blocked if you trigger all unit tests a bit too much ;)
+        /// </summary>
+
         const string APIKEY_VALID = "8b5f64eb-76aa-40b5-a7c3-971f6d56a559"; // You should add the API key of your development account here
         const string APIKEY_INVALID = "8b5f64eb-0000-0000-0000-971f6d56a559";
         const int PartyIDIndex = 0;
@@ -112,6 +116,20 @@ namespace Billit.SDK.Test
             var expenses = service.GetExpenses(service.AccountInformation.Companies[PartyIDIndex].PartyID, string.Empty);
             Assert.IsTrue(expenses.Count() != 0);
             Assert.IsTrue(expenses.Where(s => s.OrderDirection == "Income").Count() == 0, "There should not be orders with OrderDirection Income in GetExpenses");
+        }
+
+        [TestMethod]
+        public void BillitService_IsCompanyActiveOnPEPPOL()
+        {
+            /*this action is typically done just after the user selects the customer, 
+             * if the customer's VAT is available on PEPPOL. You can visualize a PEPPOL Send button in the UI.
+             * This the PEPPOL FIRST strategy
+             */
+
+            var vat = "BE0563846944";
+            var service = new BillitService(APIKEY_VALID);
+            var peppolactive = service.IsCompanyActiveOnPEPPOL(vat);
+            Assert.IsTrue(peppolactive.Registered, "Billit is a certified PEPPOL Access Point, it must be on PEPPOL :)");
         }
     }
 }

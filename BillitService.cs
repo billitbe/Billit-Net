@@ -143,10 +143,26 @@ namespace Billit_Net
             }
         }
 
-        public bool IsCompanyActiveOnPEPPOL(string VAT)
+        public PeppolParticipantInformation IsCompanyActiveOnPEPPOL(string VAT)
         {
-            throw new NotImplementedException();
+            PeppolParticipantInformation result = null;
+            var url = string.Format("https://api.billit.be/v1/peppol/participantInformation/{0}",VAT);
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey }
+                    };
+                client.Headers = headers;
+                var json = client.DownloadString(url);
+                var serializer = new JavaScriptSerializer();
+                result = serializer.Deserialize<PeppolParticipantInformation>(json);
+            }
+
+            return result;
         }
+
 
     }
 }

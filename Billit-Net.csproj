@@ -49,6 +49,7 @@
     <Compile Include="DTO\Company.cs" />
     <Compile Include="DTO\Order.cs" />
     <Compile Include="DTO\Party.cs" />
+    <Compile Include="DTO\PeppolParticipantInformation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
