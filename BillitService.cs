@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Billit_Net
-
 {
     public class BillitService
     {
