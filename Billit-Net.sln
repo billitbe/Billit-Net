@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Billit-Net", "Billit-Net.csproj", "{BA14D804-53BB-4210-8A3C-67E014645150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{F766986F-B288-40BD-B26A-C95445BAB6CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Billit-Net.Test", "UnitTestProject1\Billit-Net.Test.csproj", "{F766986F-B288-40BD-B26A-C95445BAB6CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
