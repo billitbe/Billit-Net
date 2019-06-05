@@ -41,6 +41,14 @@ BillitService service = new BillitService(APIKEY);
 var result = service.IsCompanyActiveOnPEPPOL(vat);
 ```
 
+### How to retrieve all invoices?
+```csharp
+BillitService service = new BillitService(APIKEY_VALID);
+int PartyIDIndex = 0; //let's assume there is only one company connected to this APIkey
+var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID
+var incomes = service.GetIncomeInvoices(partyID, string.Empty);
+```
+
 ### How to send a PDF or image to fast input to be processed to UBL?
 ```csharp
 var service = new BillitService(APIKEY_VALID);
