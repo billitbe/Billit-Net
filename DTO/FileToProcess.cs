@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Billit_Net.DTO
 {
-    public class File
+    public class FileInformation
     {
         public string FileName { get; set; }
         public string FileContent { get; set; }
@@ -14,6 +14,6 @@ namespace Billit_Net.DTO
 
     public class FileToProcess
     {
-        public File File { get; set; }
+        public FileInformation File { get; set; }
     }
 }

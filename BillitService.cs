@@ -12,9 +12,13 @@ namespace Billit_Net
 {
     public class BillitService
     {
-        const string URLACCOUNTINFORMATION = "https://api.billit.be/v1/account/accountInformation";
-        const string URLPARTIES = "https://api.billit.be/v1/parties";
-        const string URLORDERS = "https://api.billit.be/v1/orders";
+
+        const string environment = "https://api.sandbox.billit.be";
+
+
+        const string URLACCOUNTINFORMATION = environment+"/v1/account/accountInformation";
+        const string URLPARTIES = environment + "/v1/parties";
+        const string URLORDERS = environment + "/v1/orders";
         const string ACCEPTHEADER = "Accept";
         const string RESPONSEHEADER = "Content-type";
         const string ACCEPTHEADERJSON = "application/json";
@@ -60,23 +64,15 @@ namespace Billit_Net
             return parties;
         }
 
-        public IEnumerable<Party> GetCustomers(string partyID)
+        public IEnumerable<Party> GetCustomers(string partyID=null, string odatafilter=null)
         {
-            var customers = GetParties(partyID, "?$filter=PartyType eq 'Customer'&$orderby=Name+asc");
-
+            var customers = GetParties(partyID, odatafilter);
             return customers;
         }
 
-        public IEnumerable<Party> GetCustomers()
+        public IEnumerable<Party> GetSuppliers(string partyID, string odatafilter)
         {
-            var customers = GetParties(null, "?$filter=PartyType eq 'Customer'&$orderby=Name+asc");
-
-            return customers;
-        }
-
-        public IEnumerable<Party> GetSuppliers(string partyID)
-        {
-            var suppliers = GetParties(partyID, "?$filter=PartyType eq 'Supplier'&$orderby=Name+asc");
+            var suppliers = GetParties(partyID, odatafilter);
             return suppliers;
         }
 
@@ -107,7 +103,7 @@ namespace Billit_Net
 
         public ICollection<Order> GetIncomeInvoices(string partyID, string odatafilter)
         {
-            var incomes = GetOrders(partyID, "?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice'&$orderby=OrderID+asc");
+            var incomes = GetOrders(partyID, odatafilter);
             return incomes;
         }
 
@@ -132,7 +128,7 @@ namespace Billit_Net
         public PeppolParticipantInformation IsCompanyActiveOnPEPPOL(string VAT)
         {
             PeppolParticipantInformation result = null;
-            var url = string.Format("https://api.billit.be/v1/peppol/participantInformation/{0}", VAT);
+            var url = string.Format(environment+"/v1/peppol/participantInformation/{0}", VAT);
             using (var client = new WebClient())
             {
                 var headers = new WebHeaderCollection
@@ -151,7 +147,7 @@ namespace Billit_Net
 
         public void PushDocumentToFastInput(FileToProcess fileinfo)
         {
-            var url = string.Format("https://api.billit.be/v1/toProcess");
+            var url = string.Format(environment+"/v1/toProcess");
 
             using (var client = new WebClient())
             {
@@ -167,7 +163,26 @@ namespace Billit_Net
                 var result = client.UploadString(url, json);
             }
         }
+        public string SendInvoiceViaPEPPOL(string json)
+        {
+            var url = string.Format(environment + "/v1/peppol/sendXML");
+            var responseID = string.Empty;
 
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey },
+                        { RESPONSEHEADER, RESPONSECONTENTTYPE }
+                    };
+                client.Headers = headers;
+                var serializer = new JavaScriptSerializer();
+                responseID = client.UploadString(url, json);
+            }
+
+            return responseID;
+        }
 
         private void Connect()
         {
@@ -184,6 +199,5 @@ namespace Billit_Net
                 m_accountinfo = serializer.Deserialize<AccountInformation>(json);
             }
         }
-
     }
 }
