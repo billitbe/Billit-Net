@@ -42,7 +42,7 @@ BillitService service = new BillitService(APIKEY);
 var result = service.IsCompanyActiveOnPEPPOL(vat);
 ```
 
-### How to verify if a customer is active on PEPPOL?
+### How to send an e-invoice via PEPPOL?
 ```csharp
 var json = File.ReadAllText(Environment.CurrentDirectory+ @"\Files\validPEPPOLInvoice.json", Encoding.UTF8);
 var service = new BillitService(APIKEY_VALID);
