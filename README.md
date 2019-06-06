@@ -22,6 +22,7 @@ Download the source code from github and compile yourself: **https://github.com/
 * CompanyInfo - Create, Find and Update
 * Credit Notes - Create, Find and Update
 * Invoices - Create, Find and Update
+* PEPPOL - Find VAT, Send E-invoice, Receive E-invoice
 
 ### Documents API
 * Documents - Add PDF, Word, Excel files
@@ -34,6 +35,32 @@ Download the source code from github and compile yourself: **https://github.com/
 ## Samples
 There are samples for each of the API endpoints. These have been done as console application and also a collection of Unit tests. The test projects contain lots of useful examples of how to use this library to interact with the Billit API.
 
+### How to verify if a customer is active on PEPPOL?
+```csharp
+String vat = "BE0563846944";
+BillitService service = new BillitService(APIKEY);
+var result = service.IsCompanyActiveOnPEPPOL(vat);
+```
+
+### How to retrieve all invoices?
+```csharp
+BillitService service = new BillitService(APIKEY_VALID);
+int PartyIDIndex = 0; //let's assume there is only one company connected to this APIkey
+var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID
+var incomes = service.GetIncomeInvoices(partyID, string.Empty);
+```
+
+### How to send a PDF or image to fast input to be processed to UBL?
+```csharp
+var service = new BillitService(APIKEY_VALID);
+FileToProcess file = new FileToProcess() {
+	File = new File {	
+		FileName = "test.pdf",
+		FileContent = "JVBERi0xLjcNJeLjz9MNCjE0IDAgb..."
+                }
+	};
+service.PushDocumentToFastInput(file);
+```
 
 ## License
 
