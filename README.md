@@ -42,6 +42,14 @@ BillitService service = new BillitService(APIKEY);
 var result = service.IsCompanyActiveOnPEPPOL(vat);
 ```
 
+### How to verify if a customer is active on PEPPOL?
+```csharp
+var json = File.ReadAllText(Environment.CurrentDirectory+ @"\Files\validPEPPOLInvoice.json", Encoding.UTF8);
+var service = new BillitService(APIKEY_VALID);
+string responseID = service.SendInvoiceViaPEPPOL(json);
+//responseID can be used later to retrieve results and status, however that api is at this moment not available yet
+```
+
 ### How to retrieve all invoices since a specific date?
 ```csharp
 // Billit highly recommends you to optimize the oData query and caching mechanisms to prevent your application of beeing throttled or blocked
