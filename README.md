@@ -45,14 +45,14 @@ var result = service.IsCompanyActiveOnPEPPOL(vat);
 ### How to retrieve all invoices since a specific date?
 ```csharp
 // Billit highly recommends you to optimize the oData query and caching mechanisms to prevent your application of beeing throttled or blocked
-            // More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
+// More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
             
-            // This is the oData representation of all income invoices that have been modified since yesterday ordered by OrderID in ascending order.
-            var oData = "?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=OrderID+asc";
+// This is the oData representation of all income invoices that have been modified since yesterday ordered by OrderID in ascending order.
+var oData = "?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=OrderID+asc";
 
-            var service = new BillitService(APIKEY_VALID);
-            var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
-            var incomes = service.GetIncomeInvoices(partyID, oData);
+var service = new BillitService(APIKEY_VALID);
+var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
+var incomes = service.GetIncomeInvoices(partyID, oData);
 ```
 
 ### How to send a PDF or image to fast input to be processed to UBL?
