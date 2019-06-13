@@ -199,5 +199,44 @@ namespace Billit_Net
                 m_accountinfo = serializer.Deserialize<AccountInformation>(json);
             }
         }
+
+        public void CreateCustomer(string json)
+        {
+            var url = string.Format(environment + "/v1/parties");
+            var responseID = string.Empty;
+
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey },
+                        { RESPONSEHEADER, RESPONSECONTENTTYPE }
+                    };
+                client.Headers = headers;
+                var serializer = new JavaScriptSerializer();
+                responseID = client.UploadString(url, json);
+            }
+
+        }
+
+        public void UploadCODA(string CODA)
+        {
+            var url = string.Format(environment + "/v1/financialTransaction/importFile");
+            var responseID = string.Empty;
+
+            using (var client = new WebClient())
+            {
+                var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey },
+                        { RESPONSEHEADER, RESPONSECONTENTTYPE }
+                    };
+                client.Headers = headers;
+                var serializer = new JavaScriptSerializer();
+                responseID = client.UploadString(url, CODA);
+            }
+        }
     }
 }

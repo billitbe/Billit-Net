@@ -151,6 +151,28 @@ namespace Billit_Net.Test
             //responseID can be used later to retrieve results and status, however that api is at this moment not available yet
         }
 
+        [TestMethod]
+        public void BillitService_CreateCustomer()
+        {
+            var json = File.ReadAllText(Environment.CurrentDirectory+ @"\Files\createcustomer.json", Encoding.UTF8);
+            var service = new BillitService(APIKEY_VALID);
+            service.CreateCustomer(json);
+        }
+
+        [TestMethod]
+        public void BillitService_UploadCODA()
+        {
+            var codajson = File.ReadAllText(Environment.CurrentDirectory + @"\Files\coda.json", Encoding.UTF8);
+            var coda = File.ReadAllText(Environment.CurrentDirectory + @"\Files\CodaExample.cod", Encoding.UTF8);
+
+            var codatobytetobase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(coda));
+
+            var json = codajson.Replace("##CODATOBYTETOBASE64PLACEHOLDER##", codatobytetobase64);
+
+            var service = new BillitService(APIKEY_VALID);
+            service.UploadCODA(json);
+        }
+
         private static string GetDateFilter()
         {
             return DateTime.Now.AddDays(-1).ToString("yyy-MM-dd");
