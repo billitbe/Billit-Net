@@ -1,17 +1,18 @@
 {
   "Nr": "777",
-  "Name": "Lion King",
-  "Street": "Molenberg",
-  "StreetNumber": "11",
-  "Zipcode": "1702",
-  "City": "Dilbeek",
+  "Name": "Name",
+  "Street": "Street",
+  "StreetNumber": "1",
+  "Zipcode": "9000",
+  "City": "Gent",
   "CountryCode": "BE",
-  "Contact": "Matata",
+  "Contact": "Contact",
   "VATNumber": "BE0418384457",
   "LastModified": "2019-06-11T14:17:15.4766667",
   "Created": "2019-06-11T14:17:15.4466667",
-  "PartyType": "Supplier",
+  "PartyType": "Customer",
   "VATLiable": true,
   "Language": "NL",
-  "BankAccounts": []
+  "IBAN": "BE82068930360268",
+  "BIC": "GKCCBEBB"
 }
