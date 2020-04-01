@@ -62,6 +62,9 @@
     <None Include="Files\invalidPEPPOLInvoice.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Files\validPEPPOLJSONInvoice.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\validPEPPOLInvoice.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

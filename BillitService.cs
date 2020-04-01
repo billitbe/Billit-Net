@@ -163,7 +163,7 @@ namespace Billit_Net
                 var result = client.UploadString(url, json);
             }
         }
-        public string SendInvoiceViaPEPPOL(string json)
+        public string SendInvoiceViaXMLPEPPOL(string json)
         {
             var url = string.Format(environment + "/v1/peppol/sendXML");
             var responseID = string.Empty;
@@ -181,6 +181,27 @@ namespace Billit_Net
                 responseID = client.UploadString(url, json);
             }
 
+            return responseID;
+        }
+
+        public string SendInvoiceViaJsonPEPPOL(string json)
+        {
+                var responseID = string.Empty;
+           
+                var url = string.Format(environment + "/v1/peppol/sendOrder");
+
+                using (var client = new WebClient())
+                {
+                    var headers = new WebHeaderCollection
+                    {
+                        { ACCEPTHEADER, ACCEPTHEADERJSON },
+                        { API_KEYHEADER, this.m_apiKey },
+                        { RESPONSEHEADER, RESPONSECONTENTTYPE }
+                    };
+                    client.Headers = headers;
+                    var serializer = new JavaScriptSerializer();
+                    responseID = client.UploadString(url, json);
+                }
             return responseID;
         }
 
