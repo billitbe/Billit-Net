@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Billit_Net.DTO
 {
-    public class Process
+    public record Process
     {
         public string ProcessIdentifier { get; set; }
         public string ProcessIdentifierScheme { get; set; }
     }
 
-    public class ServiceDetail
+    public record ServiceDetail
     {
         public string DocumentIdentifier { get; set; }
         public string DocumentIdentifierScheme { get; set; }
         public List<Process> Processes { get; set; }
     }
 
-    public class PeppolParticipantInformation
+    public record PeppolParticipantInformation
     {
         public bool Registered { get; set; }
         public List<string> DocumentTypes { get; set; }

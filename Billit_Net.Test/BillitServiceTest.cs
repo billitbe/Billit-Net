@@ -1,12 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using System.Collections;
-using System.Linq;
-using Billit_Net;
-using Billit_Net.DTO;
-using System.IO;
 using System.Text;
+using Billit_Net.DTO;
+using static System.Net.WebRequestMethods;
 
 namespace Billit_Net.Test
 {
@@ -16,9 +11,10 @@ namespace Billit_Net.Test
         /// <summary>
         /// Please be aware that your IP might be throttled or blocked if you trigger all unit tests a bit too much ;)
         /// </summary>
-        const string APIKEY_VALID = "09b74d3c-b0be-47bd-8a47-68bd8eb186ff"; // this is a sandbox token, only available on https://my.sandbox.billit.be & https://api.sandbox.billit.be
+        const string APIKEY_VALID = "d3aa6a49-e1e0-4e76-9132-xxxxxxxx"; // this is a sandbox token, only available on https://my.sandbox.billit.be & https://api.sandbox.billit.be
         const string APIKEY_INVALID = "8b5f64eb-0000-0000-0000-971f6d56a559";
         const int PartyIDIndex = 0;
+        const string env = "https://api.sandbox.billit.be";
 
         /// <summary>
         /// an example of how to instantiate a BillitService object by using a valid api key
@@ -26,18 +22,20 @@ namespace Billit_Net.Test
         [TestMethod]
         public void BillitService_AuthenticationTest()
         {
-            var service = new BillitService(APIKEY_VALID);
-            Assert.IsTrue(service.AccountInformation.Companies.Count != 0);
+            var service = new BillitService(APIKEY_VALID, env);
+            Assert.IsTrue(service.AccountInformation?.Companies.Count != 0);
         }
 
         /// <summary>
         /// an example of how to instantiate a BillitService object by using an invalid api key
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(WebException))]
+        [ExpectedException(typeof(AggregateException))]
         public void BillitService_Authentication_FalseKeyTest()
         {
-            var service = new BillitService(APIKEY_INVALID);
+            var service = new BillitService(APIKEY_INVALID, env);
+            var results = service.ConnectAsync().Result;
+
         }
 
         [TestMethod]
@@ -47,11 +45,11 @@ namespace Billit_Net.Test
             // More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
 
             // This is the oData representation of all suppliers that have been modified since yesterday ordered by their name in ascending order.
-            var Odatafilter = "?$filter=PartyType eq 'Supplier'  and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=Name+asc";
-            var service = new BillitService(APIKEY_VALID);
-            var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
-
-            var suppliers = service.GetSuppliers(partyID,Odatafilter);
+            var Odatafilter = $"?$filter=PartyType eq 'Supplier'  and LastModified ge DateTime'{GetDateFilter()}'&$orderby=Name+asc";
+            var service = new BillitService(APIKEY_VALID,env);
+            var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
+            if(partyID!=null)
+              service.GetSuppliers(partyID, Odatafilter);
         }
 
         [TestMethod]
@@ -61,12 +59,14 @@ namespace Billit_Net.Test
             // More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
 
             // This is the oData representation of all customers that have been modified since yesterday ordered by their name in ascending order.
-            var Odatafilter = "?$filter=PartyType eq 'Customer'  and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=Name+asc";
+            var Odatafilter = $"?$filter=PartyType eq 'Customer'  and LastModified ge DateTime'{GetDateFilter()}'&$orderby=Name+asc";
 
             var service = new BillitService(APIKEY_VALID);
-            var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
+            var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
+            if (partyID != null)
+                service.GetCustomers(partyID, Odatafilter);
 
-            var customers = service.GetCustomers(Odatafilter, Odatafilter);
+        
         }
 
         [TestMethod]
@@ -74,13 +74,15 @@ namespace Billit_Net.Test
         {
             // Billit highly recommends you to optimize the oData query and caching mechanisms to prevent your application of beeing throttled or blocked
             // More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
-            
+
             // This is the oData representation of all income invoices that have been modified since yesterday ordered by OrderID in ascending order.
-            var oData = "?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=OrderID+asc";
+            var oData = $"?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'{GetDateFilter()}'&$orderby=OrderID+asc";
 
             var service = new BillitService(APIKEY_VALID);
-            var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
-            var incomes = service.GetIncomeInvoices(partyID, oData);
+            var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
+            if (partyID != null)
+                service.GetIncomeInvoices(partyID, oData);
+            
         }
 
         [TestMethod]
@@ -90,12 +92,13 @@ namespace Billit_Net.Test
             // More information about oData filters: https://www.odata.org/documentation/odata-version-2-0/uri-conventions/
 
             // This is the oData representation of all income offers that have been modified since yesterday ordered by OrderID in ascending order.
-            var oData = "?$filter=OrderDirection eq 'Income' and OrderType eq 'Offer' and LastModified ge DateTime'" + GetDateFilter() + "'&$orderby=OrderID+asc";
+            var oData = $"?$filter=OrderDirection eq 'Income' and OrderType eq 'Offer' and LastModified ge DateTime'{GetDateFilter()}'&$orderby=OrderID+asc";
 
             var service = new BillitService(APIKEY_VALID);
-            var partyID = service.AccountInformation.Companies[PartyIDIndex].PartyID;
+            var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
+            if (partyID != null)
+                service.GetIncomeOffers(partyID, oData);
 
-            var offers = service.GetIncomeInvoices(partyID, oData);
         }
 
         [TestMethod]
@@ -142,19 +145,20 @@ namespace Billit_Net.Test
         public void BillitService_SendInvalidXMLViaPEPPOL()
         {
             //this XML is not a valid PEPPOL XML
-            var json = File.ReadAllText(Environment.CurrentDirectory + @"\Files\invalidPEPPOLInvoice.json", Encoding.UTF8);
-            var service = new BillitService(APIKEY_VALID);
+            var json = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\invalidPEPPOLInvoice.json", Encoding.UTF8);
+            var service = new BillitService(APIKEY_VALID,env);
             service.SendInvoiceViaXMLPEPPOL(json);
         }
 
         [TestMethod]
         public void BillitService_SendValidXMLViaPEPPOL()
         {
-            try { 
+            try
+            {
                 //the json contains an XML that returns a 400 error: "Description": "/CreditNote/cac:TaxTotal/cac:TaxSubtotal[1]/cac:TaxCategory/cbc:ID: [CL-T14-R007]-Credit Note tax categories MUST be coded using UNCL 5305 code list BII2 subset" 
                 //todo tomvan: change the XML with a valid
-                var json = File.ReadAllText(Environment.CurrentDirectory+ @"\Files\validPEPPOLInvoice.json", Encoding.UTF8);
-                var service = new BillitService(APIKEY_VALID);
+                var json = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\validPEPPOLInvoice.json", Encoding.UTF8);
+                var service = new BillitService(APIKEY_VALID, env);
                 string responseID = service.SendInvoiceViaXMLPEPPOL(json);
                 //responseID can be used later to retrieve results and status, however that api is at this moment not available yet
             }
@@ -169,8 +173,8 @@ namespace Billit_Net.Test
         {
             try
             {
-                var json = File.ReadAllText(Environment.CurrentDirectory + @"\Files\validPEPPOLJSONInvoice.json", Encoding.UTF8);
-                var service = new BillitService(APIKEY_VALID);
+                var json = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\validPEPPOLJSONInvoice.json", Encoding.UTF8);
+                var service = new BillitService(APIKEY_VALID, env);
                 string responseID = service.SendInvoiceViaJsonPEPPOL(json);
 
                 Assert.IsFalse(string.IsNullOrEmpty(responseID), "response ID should not be null");
@@ -183,38 +187,36 @@ namespace Billit_Net.Test
 
         private static void ProcessException(WebException e)
         {
-            if (e.Status == WebExceptionStatus.ProtocolError)
+            if (e.Status == WebExceptionStatus.ProtocolError 
+                && e.Response != null)
             {
-                Console.WriteLine("Status Code : {0}", ((HttpWebResponse)e.Response).StatusCode);
-                Console.WriteLine("Status Description : {0}", ((HttpWebResponse)e.Response).StatusDescription);
-                using (StreamReader r = new StreamReader(((HttpWebResponse)e.Response).GetResponseStream()))
-                {
-                    var exceptionInBody = r.ReadToEnd();
-                    Console.WriteLine("Content: {0}", exceptionInBody);
-                    Assert.Fail(exceptionInBody);
-                }
+                var response = (HttpWebResponse)e.Response;
+                Console.WriteLine($"Status Code : {response.StatusCode}");
+                Console.WriteLine($"Status Description : {response.StatusDescription}");
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                Assert.Fail(responseString);
             }
         }
 
         [TestMethod]
         public void BillitService_CreateCustomer()
         {
-            var json = File.ReadAllText(Environment.CurrentDirectory+ @"\Files\createcustomer.json", Encoding.UTF8);
-            var service = new BillitService(APIKEY_VALID);
+            var json = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\createcustomer.json", Encoding.UTF8);
+            var service = new BillitService(APIKEY_VALID, env);
             service.CreateCustomer(json);
         }
 
         [TestMethod]
         public void BillitService_UploadCODA()
         {
-            var codajson = File.ReadAllText(Environment.CurrentDirectory + @"\Files\coda.json", Encoding.UTF8);
-            var coda = File.ReadAllText(Environment.CurrentDirectory + @"\Files\CodaExample.cod", Encoding.UTF8);
+            var codajson = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\coda.json", Encoding.UTF8);
+            var coda = System.IO.File.ReadAllText(Environment.CurrentDirectory + @"\Files\CodaExample.cod", Encoding.UTF8);
 
             var codatobytetobase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(coda));
 
             var json = codajson.Replace("##CODATOBYTETOBASE64PLACEHOLDER##", codatobytetobase64);
 
-            var service = new BillitService(APIKEY_VALID);
+            var service = new BillitService(APIKEY_VALID, env);
             service.UploadCODA(json);
         }
 

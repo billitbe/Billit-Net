@@ -18,7 +18,7 @@ namespace Billit_Net.DTO
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", DisplayName, PartyType);
+            return $"{DisplayName} {PartyType}";
         }
     }
 
@@ -50,7 +50,7 @@ namespace Billit_Net.DTO
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", OrderID, OrderType,OrderDirection);
+            return $"{OrderID} {OrderType} {OrderDirection}";
         }
     }
 
