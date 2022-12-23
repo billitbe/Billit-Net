@@ -8,7 +8,7 @@ namespace Billit_Net.DTO
 {
     public class Company
     {
-        public string PartyID { get; set; }
+        public int PartyID { get; set; }
         public string VATNumber { get; set; }
         public string PartyType { get; set; }
         public string Name { get; set; }

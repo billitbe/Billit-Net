@@ -49,7 +49,7 @@ namespace Billit_Net.Test
             var service = new BillitService(APIKEY_VALID,env);
             var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
             if(partyID!=null)
-              service.GetSuppliers(partyID, Odatafilter);
+              service.GetSuppliers(partyID.ToString(), Odatafilter);
         }
 
         [TestMethod]
@@ -61,10 +61,10 @@ namespace Billit_Net.Test
             // This is the oData representation of all customers that have been modified since yesterday ordered by their name in ascending order.
             var Odatafilter = $"?$filter=PartyType eq 'Customer'  and LastModified ge DateTime'{GetDateFilter()}'&$orderby=Name+asc";
 
-            var service = new BillitService(APIKEY_VALID);
+            var service = new BillitService(APIKEY_VALID,"");
             var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
             if (partyID != null)
-                service.GetCustomers(partyID, Odatafilter);
+                service.GetCustomers(partyID.ToString(), Odatafilter);
 
         
         }
@@ -78,10 +78,10 @@ namespace Billit_Net.Test
             // This is the oData representation of all income invoices that have been modified since yesterday ordered by OrderID in ascending order.
             var oData = $"?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'{GetDateFilter()}'&$orderby=OrderID+asc";
 
-            var service = new BillitService(APIKEY_VALID);
+            var service = new BillitService(APIKEY_VALID,env);
             var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
             if (partyID != null)
-                service.GetIncomeInvoices(partyID, oData);
+                service.GetIncomeInvoices(partyID.ToString(), oData);
             
         }
 
@@ -94,10 +94,10 @@ namespace Billit_Net.Test
             // This is the oData representation of all income offers that have been modified since yesterday ordered by OrderID in ascending order.
             var oData = $"?$filter=OrderDirection eq 'Income' and OrderType eq 'Offer' and LastModified ge DateTime'{GetDateFilter()}'&$orderby=OrderID+asc";
 
-            var service = new BillitService(APIKEY_VALID);
+            var service = new BillitService(APIKEY_VALID,env);
             var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
             if (partyID != null)
-                service.GetIncomeOffers(partyID, oData);
+                service.GetIncomeOffers(partyID.ToString(), oData);
 
         }
 
@@ -110,7 +110,7 @@ namespace Billit_Net.Test
              */
 
             var vat = "BE0563846944";
-            var service = new BillitService(APIKEY_VALID);
+            var service = new BillitService(APIKEY_VALID,env);
             var peppolactive = service.IsCompanyActiveOnPEPPOL(vat);
 
             Assert.IsTrue(peppolactive.Registered, "Billit is a certified PEPPOL Access Point, it must be on PEPPOL :)");
@@ -121,7 +121,7 @@ namespace Billit_Net.Test
         {
             try
             {
-                var service = new BillitService(APIKEY_VALID);
+                var service = new BillitService(APIKEY_VALID,env);
 
                 //FileContent is the base64 representation of the PDF content, in this case an empty page with the word: Test on it.
                 FileToProcess file = new FileToProcess()

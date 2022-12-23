@@ -1,26 +1,21 @@
 ﻿using Billit_Net.DTO;
 using Newtonsoft.Json;
-using System.Net;
-using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace Billit_Net
 {
     public class BillitService
     {
-        private string environment = "https://api.sandbox.billit.be";
-        private string apiKey;
+        // Reusing the httpclient makes more sense
+        private static readonly HttpClient _client = new();
         public AccountInformation AccountInformation { get; private set; }
 
-        public BillitService(string apiKey)
+        public BillitService(string apiKey, string baseUrl) 
         {
-            this.apiKey = apiKey;
-        }
-
-        public BillitService(string apiKey, string baseUrl)
-        {
-            this.apiKey = apiKey;
-            environment = baseUrl;
+        //    _environment = baseUrl;
+            _client.BaseAddress = new Uri(baseUrl);
+            _client.DefaultRequestHeaders.Add("apiKey", apiKey);
         }
         public async Task<AccountInformation> ConnectAsync()
         {
@@ -89,7 +84,6 @@ namespace Billit_Net
 
         #region Class Helpers
 
-
         private async Task<List<Order>> GetOrders(string partyId, string odatafilter)
         {
             var orders = new List<Order>();
@@ -126,11 +120,8 @@ namespace Billit_Net
 
         private async Task<string> SendDataToBillItAPI(string url, string payload)
         {
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri(environment);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("apiKey", this.apiKey);
-            HttpResponseMessage response = await client.PostAsync(url, new StringContent(payload, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PostAsync(url, 
+                new StringContent(payload, Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
             var resp = await response.Content.ReadAsStringAsync();
             return resp;
@@ -138,16 +129,8 @@ namespace Billit_Net
 
         private async Task<T> GetDataFromBillItAPI<T>(string url, string partyId = "")
         {
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri(environment);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("apiKey", this.apiKey);
-            client.DefaultRequestHeaders.Add("partyID", partyId);
-            HttpResponseMessage response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            string resp = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<T>(resp);
+            _client.DefaultRequestHeaders.Add("partyID", partyId);
+            return await _client.GetFromJsonAsync<T>(url);
         }
 
         #endregion
