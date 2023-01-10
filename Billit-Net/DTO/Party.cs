@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Billit_Net.DTO
+﻿namespace Billit_Net.DTO
 {
     public class Party
     {
@@ -32,7 +29,7 @@ namespace Billit_Net.DTO
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", Name, PartyType);
+            return $"{Name} {PartyType}";
         }
     }
 
@@ -41,6 +38,4 @@ namespace Billit_Net.DTO
         public List<Party> Items { get; set; }
         public string NextPageLink { get; set; }
     }
-
-    
 }

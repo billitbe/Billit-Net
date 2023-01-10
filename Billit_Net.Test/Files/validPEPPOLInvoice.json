@@ -1,0 +1,41 @@
+{
+    "OrderNumber": "2491",
+    "Customer": {
+        "Nr": "1105",
+        "Name": "Nettion",
+        "Street": "Lindelaan(Z)",
+        "StreetNumber": "5",
+        "Box": "A",
+        "Zipcode": "8550",
+        "City": "Zwevegem",
+        "CountryCode": "BE",
+        "Email": "michael@nettion.be",
+        "VATNumber": "BE0551834582",
+        "LastModified": "2021-06-16T13:35:18.507",
+        "Created": "2018-11-03T14:50:35.323",
+        "VATLiable": true,
+        "Language": "NL",
+        "VentilationCode": "4",
+        "DefaultPaid": false,
+        "DisplayName": "Nettion",
+        "VATDeductable": true
+    },
+    "OrderDate": "2021-06-16T00:00:00",
+    "ExpiryDate": "2021-07-16T00:00:00",
+    "OrderType": "Invoice",
+    "OrderDirection": "Income",
+    "OrderLines": [
+        {
+            "Quantity": 1.00000,
+            "UnitPriceExcl": 1.00000,
+            "Description": "Test Invoice Line",
+            "VATPercentage": 21.00,
+            "TotalIncl": 1.21
+        }
+    ],
+    "VentilationCode": "4",
+    "TotalExcl": 1.00,
+    "TotalIncl": 1.21,
+    "TotalVAT": 0.21,
+    "PaymentReference": "+++249/1626/44757+++"
+}
