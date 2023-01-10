@@ -11,7 +11,7 @@ namespace Billit_Net.Test
         /// <summary>
         /// Please be aware that your IP might be throttled or blocked if you trigger all unit tests a bit too much ;)
         /// </summary>
-        const string APIKEY_VALID = "d3aa6a49-e1e0-4e76-9132-xxxxxxxx"; // this is a sandbox token, only available on https://my.sandbox.billit.be & https://api.sandbox.billit.be
+        const string APIKEY_VALID = "d3aa6a49-e1e0-4e76-9132-XXXXXXXX"; // this is a sandbox token, only available on https://my.sandbox.billit.be & https://api.sandbox.billit.be
         const string APIKEY_INVALID = "8b5f64eb-0000-0000-0000-971f6d56a559";
         const int PartyIDIndex = 0;
         const string env = "https://api.sandbox.billit.be";
@@ -61,7 +61,7 @@ namespace Billit_Net.Test
             // This is the oData representation of all customers that have been modified since yesterday ordered by their name in ascending order.
             var Odatafilter = $"?$filter=PartyType eq 'Customer'  and LastModified ge DateTime'{GetDateFilter()}'&$orderby=Name+asc";
 
-            var service = new BillitService(APIKEY_VALID,"");
+            var service = new BillitService(APIKEY_VALID,env);
             var partyID = service.AccountInformation?.Companies[PartyIDIndex].PartyID;
             if (partyID != null)
                 service.GetCustomers(partyID.ToString(), Odatafilter);

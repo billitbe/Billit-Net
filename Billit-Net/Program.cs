@@ -2,7 +2,7 @@
 using Billit_Net;
 
 const string env = "https://api.sandbox.billit.be";
-const string APIKEY_VALID = "d3aa6a49-e1e0-4e76-9132-c5eaf069244e";
+const string APIKEY_VALID = "d3aa6a49-e1e0-4e76-9132-XXXXXX";
 const int PartyIDIndex = 0;
 var oData = $"?$filter=OrderDirection eq 'Income' and OrderType eq 'Invoice' and LastModified ge DateTime'{DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd")}'&$orderby=OrderID+asc";
 
